@@ -4,6 +4,14 @@ import csv
 budget_data_csv = os.path.join('Resources','budget_data.csv')
 analysis_export = os.path.join('analysis', 'analysis.txt')
 
+def average(numbers):
+    #return sum(numbers) / len(numbers)
+    length = len(numbers)-1
+    num = 0.0
+    for number in numbers:
+        num += number
+    return num / length
+
 #read in the csv file    
 with open(budget_data_csv, 'r') as csvfile:
 
@@ -27,7 +35,10 @@ with open(budget_data_csv, 'r') as csvfile:
     for row in csvreader:
         val.append(int(row[1]))
         mnth.append(row[0])
+
+        #calculate change in profit/losses
         diff.append((val[len(val)-1])-(val[len(val)-2]))
+
         rowcount += 1  
         total += int(row[1])
     
@@ -37,41 +48,31 @@ with open(budget_data_csv, 'r') as csvfile:
     
     #print results to terminal
     print("")
-    print("Financial Analysis")
-    print("")
-    print("----------------------------")
-    print("")
-    print(f"Total Months: {rowcount}")
-    print("")
-    print(f"Total: ${total}")
-    print("")
-    print(f"Average Change: ${round(sum(diff) / len(diff), 2)}")
-    print("")
-    print(f"Greatest Increase in Profits: {mnth[maxdiffinx]} (${max(diff)})")
-    print("")
-    print(f"Greatest Decrease in Profits: {mnth[mindiffinx]} (${min(diff)})")    
+    print("Financial Analysis\n")
+    print("----------------------------\n")
+    print(f"Total Months: {rowcount}\n")
+    print(f"Total: ${total}\n")
+    print(f"Average Change: ${round(average(diff), 2)}\n")
+    print(f"Greatest Increase in Profits: {mnth[maxdiffinx]} (${max(diff)})\n")
+    print(f"Greatest Decrease in Profits: {mnth[mindiffinx]} (${min(diff)})\n")    
     
     #append results for export to text file
     result.append("")
-    result.append("Financial Analysis")
-    result.append("")
-    result.append("----------------------------")
-    result.append("")
-    result.append(f"Total Months: {rowcount}")
-    result.append("")
-    result.append(f"Total: ${total}")
-    result.append("")
-    result.append(f"Average Change: ${round(sum(diff) / len(diff), 2)}")
-    result.append("")
-    result.append(f"Greatest Increase in Profits: {mnth[maxdiffinx]} (${max(diff)})")
-    result.append("")
-    result.append(f"Greatest Decrease in Profits: {mnth[mindiffinx]} (${min(diff)})")
+    result.append("Financial Analysis\n")
+    result.append("----------------------------\n")
+    result.append(f"Total Months: {rowcount}\n")
+    result.append(f"Total: ${total}\n")
+    result.append(f"Average Change: ${round(average(diff), 2)}\n")
+    result.append(f"Greatest Increase in Profits: {mnth[maxdiffinx]} (${max(diff)})\n")
+    result.append(f"Greatest Decrease in Profits: {mnth[mindiffinx]} (${min(diff)})\n")
 
 #open text file
 with open(analysis_export, 'w', newline='') as txtfile:
     
-    #write each item in the results list to the text file
+    #write results text file
     for item in result:
+        
+        #write each result on a new line (https://pynative.com/python-write-list-to-file/)
         txtfile.write("%s\n" % item)
     
     #close the text file
